@@ -41,4 +41,7 @@ generate_condensed = function(output.file = "/Volumes/Mac HDD/ccmice/tempCache/f
 
 }
 
+
+# R format, functions defined before calling
 # source("/Users/xinli/Dropbox/R/ccmice/load_36states.R")
+
