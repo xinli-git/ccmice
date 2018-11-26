@@ -9,6 +9,7 @@
 # resolved genotypes at http://csbio.unc.edu/CCstatus/CCGenomes/
 
 
+library('DOQTL')
 
 create.Rdata.files_36states = function(prob.files, cross = "DO") {
 
