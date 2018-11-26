@@ -1,7 +1,7 @@
 
 
 # define functions
-source("~/Dropbox/R/ccmice/load_36states.R")
+source("~/Dropbox/projects/ccmice/load_36states.R")
 # call the function
 # generate_condensed(output.file = "~/mac_hdd/ccmice/tempCache/founder.probs.Rdata")
 
@@ -95,12 +95,12 @@ for(i in 1:length(qtl)) {
 		}
 	}
 
-source("/Users/xinli/Dropbox/R/ccmice/html.report_Xin.R")
-html.report_Xin('/Volumes/Mac HDD/ccmice/QTL/', qtl_corrected[c(1,2)], perms = perm_max[c(1,2),], assoc = FALSE)
-html.report_Xin('/Volumes/Mac HDD/ccmice/QTL/', qtl_corrected[c(3,4)], perms = perm_max[c(3,4),], assoc = FALSE)
+source("~/Dropbox/projects/ccmice/html.report_Xin.R")
+html.report_Xin('~/mac_hdd/ccmice/QTL/', qtl_corrected[c(1,2)], perms = perm_max[c(1,2),], assoc = FALSE)
+html.report_Xin('~/mac_hdd/ccmice/QTL/', qtl_corrected[c(3,4)], perms = perm_max[c(3,4),], assoc = FALSE)
 
-save.image(file="/Volumes/Mac HDD/ccmice/tempCache/ccmice_apr16.RData")
-savehistory("/Volumes/Mac HDD/ccmice/tempCache/ccmice_apr16.Rhistory")
+save.image(file="~/mac_hdd/ccmice/tempCache/ccmice_apr16.RData")
+savehistory("~/mac_hdd/ccmice/tempCache/ccmice_apr16.Rhistory")
 
 
 
