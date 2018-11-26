@@ -26,22 +26,22 @@ create.Rdata.files_36states = function(prob.files, cross = "DO") {
     prsmth = (as.matrix(prsmth))
     class(prsmth) = c("genoprobs", class(prsmth))
     attr(prsmth, "cross") = cross
-    save(prsmth, file = paste('/Volumes/Mac HDD/ccmice/tempCache/', samples[i], '.genotype.probs.Rdata', sep = "") )
+    save(prsmth, file = paste('~/mac_hdd/ccmice/tempCache/', samples[i], '.genotype.probs.Rdata', sep = "") )
     print(file)
 
   } # for(i)
 
 }
 
-generate_condensed = function(output.file = "/Volumes/Mac HDD/ccmice/tempCache/founder.probs.Rdata"){
+generate_condensed = function(output.file = "~/mac_hdd/ccmice/tempCache/founder.probs.Rdata"){
 
-	files = dir('/Volumes/Mac HDD/ccmice/genotype_prob/B37', pattern = ".csv$", full.names = TRUE)
+	files = dir('~/mac_hdd/ccmice/genotype_prob/B37', pattern = ".csv$", full.names = TRUE)
 	create.Rdata.files_36states(files, cross = "CC")
-	condense.model.probs(path = "/Volumes/Mac HDD/ccmice/tempCache/", write = output.file, model = c("additive"), cross = "CC")
+	condense.model.probs(path = "~/mac_hdd/ccmice/tempCache/", write = output.file, model = c("additive"), cross = "CC")
 
 }
 
 
 # R format, functions defined before calling
-# source("/Users/xinli/Dropbox/R/ccmice/load_36states.R")
+# source("~/Dropbox/projects/ccmice/load_36states.R")
 
