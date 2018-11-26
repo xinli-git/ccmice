@@ -6,20 +6,20 @@ source("/Users/xinli/Dropbox/R/ccmice/load_36states.R")
 # generate_condensed(output.file = "/Volumes/Mac HDD/ccmice/tempCache/founder.probs.Rdata")
 
 
-load("/Volumes/Mac HDD/ccmice/tempCache/founder.probs.Rdata")
+load("~/mac_hdd/ccmice/tempCache/founder.probs.Rdata")
 
 load(url('http://csbio.unc.edu/CCstatus/Media/snps.megamuga.Rdata'))
 mega_muga = snps
 rm(snps)
 
-temp_marker = read.csv('/Volumes/Mac HDD/ccmice/genotype_prob/B37/CC001_Uncb37V01.csv', header = TRUE)
+temp_marker = read.csv('~/mac_hdd/ccmice/genotype_prob/B37/CC001_Uncb37V01.csv', header = TRUE)
 rownames(temp_marker) = temp_marker$marker
 
 dimnames(model.probs)[[3]] = temp_marker$marker
 dimnames(model.probs)[[1]] = sapply(strsplit(dimnames(model.probs)[[1]], '_'), '[',  1)
 
 
-ccmice_phenotype = read.table('/Volumes/Mac HDD/matlab/history/ccmice/ccmice_phenotype.txt', header = TRUE)
+ccmice_phenotype = read.table('~/mac_hdd/matlab/history/ccmice/ccmice_phenotype.txt', header = TRUE)
 ccmice_phenotype$sex = 'F'
 rownames(ccmice_phenotype) = ccmice_phenotype$CCStrains
 # ccmice_phenotype = as.vector(ccmice_phenotype)
