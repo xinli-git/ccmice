@@ -27,7 +27,7 @@ create.Rdata.files_36states = function(prob.files, cross = "DO") {
     prsmth = (as.matrix(prsmth))
     class(prsmth) = c("genoprobs", class(prsmth))
     attr(prsmth, "cross") = cross
-    save(prsmth, file = paste('~/mac_hdd/ccmice/tempCache/', samples[i], '.genotype.probs.Rdata', sep = "") )
+    save(prsmth, file = paste('~/mac_hdd/ccmice/tempCache/genotype', samples[i], '.genotype.probs.Rdata', sep = "") )
     print(file)
 
   } # for(i)
@@ -38,7 +38,7 @@ generate_condensed = function(output.file = "~/mac_hdd/ccmice/tempCache/founder.
 
 	files = dir('~/mac_hdd/ccmice/genotype_prob/B37', pattern = ".csv$", full.names = TRUE)
 	create.Rdata.files_36states(files, cross = "CC")
-	condense.model.probs(path = "~/mac_hdd/ccmice/tempCache/", write = output.file, model = c("additive"), cross = "CC")
+	condense.model.probs(path = "~/mac_hdd/ccmice/tempCache/genotype", write = output.file, model = c("additive"), cross = "CC")
 
 }
 
