@@ -1,7 +1,7 @@
 
 
 # define functions
-source("/Users/xinli/Dropbox/R/ccmice/load_36states.R")
+source("~/Dropbox/R/ccmice/load_36states.R")
 # call the function
 # generate_condensed(output.file = "/Volumes/Mac HDD/ccmice/tempCache/founder.probs.Rdata")
 
