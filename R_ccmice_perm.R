@@ -1,24 +1,25 @@
 
 
+# define functions
+source("~/Dropbox/projects/ccmice/load_36states.R")
+# call the function
+# generate_condensed(output.file = "~/mac_hdd/ccmice/tempCache/founder.probs.Rdata")
 
-source("/Users/xinli/Dropbox/R/ccmice/load_36states.R")
-# generate_condensed(output.file = "/Volumes/Mac HDD/ccmice/tempCache/founder.probs.Rdata")
 
-
-load("/Volumes/Mac HDD/ccmice/tempCache/founder.probs.Rdata")
+load("~/mac_hdd/ccmice/tempCache/founder.probs.Rdata")
 
 load(url('http://csbio.unc.edu/CCstatus/Media/snps.megamuga.Rdata'))
 mega_muga = snps
 rm(snps)
 
-temp_marker = read.csv('/Volumes/Mac HDD/ccmice/genotype_prob/B37/CC001_Uncb37V01.csv', header = TRUE)
+temp_marker = read.csv('~/mac_hdd/ccmice/genotype_prob/B37/CC001_Uncb37V01.csv', header = TRUE)
 rownames(temp_marker) = temp_marker$marker
 
 dimnames(model.probs)[[3]] = temp_marker$marker
 dimnames(model.probs)[[1]] = sapply(strsplit(dimnames(model.probs)[[1]], '_'), '[',  1)
 
 
-ccmice_phenotype = read.table('/Volumes/Mac HDD/matlab/history/ccmice/ccmice_phenotype.txt', header = TRUE)
+ccmice_phenotype = read.table('~/mac_hdd/matlab/history/ccmice/ccmice_phenotype.txt', header = TRUE)
 ccmice_phenotype$sex = 'F'
 rownames(ccmice_phenotype) = ccmice_phenotype$CCStrains
 # ccmice_phenotype = as.vector(ccmice_phenotype)
@@ -31,6 +32,14 @@ ccmice_snps = mega_muga[dimnames(ccmice_Prob)[[3]], c('marker', 'chr', 'pos', 'c
 ccmice_snps$chr = temp_marker[dimnames(ccmice_snps)[[1]], 'chromosome']
 rm(temp)
 
+for(i in dimnames(ccmice_phenotype)[[1]]){
+	tmp = t(ccmice_Prob[i,,])
+	tmp = cbind("snp_id"=rownames(tmp), ccmice_snps, tmp)
+write.table(tmp, file = file.path('~/mac_hdd/ccmice/', "tempCache/haplotype",  paste(i,"_ccmice_haplotype.tsv",sep="")), append = FALSE, quote = FALSE, sep = "\t",
+            eol = "\n", na = "NA", dec = ".", row.names = FALSE,
+            col.names = TRUE, qmethod = c("escape", "double"),
+            fileEncoding = "")
+	}
 
 library('DOQTL')
 ccmice_K = kinship.probs(ccmice_Prob)
@@ -94,12 +103,12 @@ for(i in 1:length(qtl)) {
 		}
 	}
 
-source("/Users/xinli/Dropbox/R/ccmice/html.report_Xin.R")
-html.report_Xin('/Volumes/Mac HDD/ccmice/QTL/', qtl_corrected[c(1,2)], perms = perm_max[c(1,2),], assoc = FALSE)
-html.report_Xin('/Volumes/Mac HDD/ccmice/QTL/', qtl_corrected[c(3,4)], perms = perm_max[c(3,4),], assoc = FALSE)
+source("~/Dropbox/projects/ccmice/html.report_Xin.R")
+html.report_Xin('~/mac_hdd/ccmice/QTL/', qtl_corrected[c(1,2)], perms = perm_max[c(1,2),], assoc = FALSE)
+html.report_Xin('~/mac_hdd/ccmice/QTL/', qtl_corrected[c(3,4)], perms = perm_max[c(3,4),], assoc = FALSE)
 
-save.image(file="/Volumes/Mac HDD/ccmice/tempCache/ccmice_apr16.RData")
-savehistory("/Volumes/Mac HDD/ccmice/tempCache/ccmice_apr16.Rhistory")
+save.image(file="~/mac_hdd/ccmice/tempCache/ccmice_apr16.RData")
+savehistory("~/mac_hdd/ccmice/tempCache/ccmice_apr16.Rhistory")
 
 
 
