@@ -15,7 +15,9 @@ git commit -am "`date`"
 # git remote add udn https://github.com/xinli-git/kp1
 # change to ssh url
 git remote add ccmice git@github.com:xinli-git/ccmice
+git remote add ccmice_local https://github.com/xinli-git/ccmice
 git push --set-upstream ccmice master
+git push --set-upstream ccmice_local master
 
 
 
