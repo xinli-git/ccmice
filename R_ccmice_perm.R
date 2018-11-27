@@ -32,6 +32,14 @@ ccmice_snps = mega_muga[dimnames(ccmice_Prob)[[3]], c('marker', 'chr', 'pos', 'c
 ccmice_snps$chr = temp_marker[dimnames(ccmice_snps)[[1]], 'chromosome']
 rm(temp)
 
+for(i in dimnames(ccmice_phenotype)[[1]]){
+	tmp = t(ccmice_Prob[i,,])
+	tmp = cbind("snp_id"=rownames(tmp), ccmice_snps, tmp)
+write.table(tmp, file = file.path('~/mac_hdd/ccmice/', "tempCache/haplotype",  paste(i,"_ccmice_haplotype.tsv",sep="")), append = FALSE, quote = FALSE, sep = "\t",
+            eol = "\n", na = "NA", dec = ".", row.names = FALSE,
+            col.names = TRUE, qmethod = c("escape", "double"),
+            fileEncoding = "")
+	}
 
 library('DOQTL')
 ccmice_K = kinship.probs(ccmice_Prob)
