@@ -35,10 +35,10 @@ rm(temp)
 for(i in dimnames(ccmice_phenotype)[[1]]){
 	tmp = t(ccmice_Prob[i,,])
 	tmp = cbind("snp_id"=rownames(tmp), ccmice_snps, tmp)
-write.table(tmp, file = file.path('~/mac_hdd/ccmice/', "tempCache/haplotype",  paste(i,"_ccmice_haplotype.tsv",sep="")), append = FALSE, quote = FALSE, sep = "\t",
-            eol = "\n", na = "NA", dec = ".", row.names = FALSE,
-            col.names = TRUE, qmethod = c("escape", "double"),
-            fileEncoding = "")
+	write.table(tmp, file = file.path('~/mac_hdd/ccmice/', "tempCache/haplotype",  paste(i,"_ccmice_haplotype.tsv",sep="")), 
+		    append = FALSE, quote = FALSE, sep = "\t", 
+		    eol = "\n", na = "NA", dec = ".", row.names = FALSE, 
+		    col.names = TRUE, qmethod = c("escape", "double"), fileEncoding = "")
 	}
 
 library('DOQTL')
@@ -65,14 +65,14 @@ perm_geno = ccmice_Prob
 sample_id = dimnames(ccmice_Prob)[[1]]
 for(i in 1:nperm){
 	print(paste(i, "of", nperm))
-    new.order = sample(1:nrow(ccmice_phenotype))
-    dimnames(perm_geno)[[1]] = sample_id[new.order]
-    # pheno = (ccmice_phenotype)
-    # pheno[,] = (ccmice_phenotype[new.order,,drop = FALSE]) #make sure row names do not permute
-    # addcovar = ccmice_covar
-    # addcovar[,] = ccmice_covar[new.order,,drop = FALSE]	
-    # K = ccmice_K
-    # K[,] = ccmice_K[new.order, new.order]
+	new.order = sample(1:nrow(ccmice_phenotype))
+	dimnames(perm_geno)[[1]] = sample_id[new.order]
+	# pheno = (ccmice_phenotype)
+	# pheno[,] = (ccmice_phenotype[new.order,,drop = FALSE]) #make sure row names do not permute
+	# addcovar = ccmice_covar
+	# addcovar[,] = ccmice_covar[new.order,,drop = FALSE]	
+	# K = ccmice_K
+	# K[,] = ccmice_K[new.order, new.order]
 	eqtl = scanone.eqtl(ccmice_phenotype[, c('EarSwell', 'EarSwell_Area')], probs = perm_geno, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps, sex = ccmice_phenotype$sex)
 	perm = cbind(perm, eqtl)
 	bit = rownames(ccmice_phenotype)[apply(!is.na(ccmice_phenotype[, c('ExpulsionTime', 'eggcounts_Area')]), 1, all)]
