@@ -16,7 +16,7 @@ git commit -am "`date`"
 # change to ssh url
 git remote add ccmice git@github.com:xinli-git/ccmice
 git remote add ccmice_local https://github.com/xinli-git/ccmice
-git push --set-upstream ccmice master
+# git push --set-upstream ccmice master
 git push --set-upstream ccmice_local master
 
 
