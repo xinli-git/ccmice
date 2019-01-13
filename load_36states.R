@@ -11,6 +11,7 @@
 
 library('DOQTL')
 
+# convert csv files to Rdata, prepare as input to condense.model.probs()
 create.Rdata.files_36states = function(prob.files, cross = "DO") {
 
 	samples = basename(prob.files)
