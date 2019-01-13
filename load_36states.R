@@ -7,7 +7,7 @@
 # 36 states probability downloaded from 
 # http://csbio.unc.edu/CCstatus/index.py?run=FounderProbs
 # resolved genotypes at http://csbio.unc.edu/CCstatus/CCGenomes/
-
+# http://csbio.unc.edu/CCstatus/CCGenomes/#genotypes
 
 library('DOQTL')
 
