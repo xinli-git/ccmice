@@ -28,13 +28,15 @@ rownames(ccmice_phenotype) = ccmice_phenotype$CCStrains
 
 
 temp = apply(model.probs,c(1,3),sum)
-temp = apply(temp > 0.99, 2, all)
-ccmice_Prob = model.probs[dimnames(ccmice_phenotype)[[1]],,temp]
+temp_sites = apply(temp > 0.99, 2, all)
+temp_samples = intersect(dimnames(ccmice_phenotype)[[1]], dimnames(model.probs)[[1]])
+ccmice_Prob = model.probs[temp_samples,,temp_sites]
 ccmice_snps = mega_muga[dimnames(ccmice_Prob)[[3]], c('marker', 'chr', 'pos', 'cM', 'A1', 'A2', 'seq.A', 'seq.B')]
 ccmice_snps$chr = temp_marker[dimnames(ccmice_snps)[[1]], 'chromosome']
 rm(temp)
 
-for(i in dimnames(ccmice_phenotype)[[1]]){
+# export condensed haplotype states
+for(i in dimnames(ccmice_Prob)[[1]]){
 	tmp = t(ccmice_Prob[i,,])
 	tmp = cbind("snp_id"=rownames(tmp), ccmice_snps, tmp)
 	write.table(tmp, file = file.path(dir_data, "tempCache/haplotype",  paste(i,"_ccmice_haplotype.tsv",sep="")), append = FALSE, quote = FALSE, sep = "\t",
