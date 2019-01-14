@@ -5,8 +5,7 @@ dir_data = file.path(dir_ccmice, 'data_tower');
 # define functions
 source(file.path(dir_ccmice, "load_36states.R"))
 # call the function
-# generate_condensed(output.file = file.path(dir_data, "tempCache/founder.probs.Rdata"))
-
+generate_condensed(output.file = file.path(dir_data, "tempCache/founder.probs.Rdata"), input_dir = file.path(dir_data, 'genotype_prob/B37'), temp_dir = file.path(dir_data, 'tempCache/genotype'))
 
 load(file.path(dir_data, "tempCache/founder.probs.Rdata"))
 
