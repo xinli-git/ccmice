@@ -1,9 +1,11 @@
 
 
+dir_ccmice = '~/projects/ccmice';
+dir_data = file.path(dir_ccmice, 'data_tower');
 # define functions
-source("~/Dropbox/projects/ccmice/load_36states.R")
+source(file.path(dir_ccmice, "load_36states.R"))
 # call the function
-# generate_condensed(output.file = "~/mac_hdd/ccmice/tempCache/founder.probs.Rdata")
+# generate_condensed(output.file = file.path(dir_data, "tempCache/founder.probs.Rdata"))
 
 
 load("~/mac_hdd/ccmice/tempCache/founder.probs.Rdata")
