@@ -10,8 +10,14 @@ source(file.path(dir_ccmice, "load_36states.R"))
 
 load(file.path(dir_data, "tempCache/founder.probs.Rdata"))
 
+# mm9
 load(url('http://csbio.unc.edu/CCstatus/Media/snps.megamuga.Rdata'))
 mega_muga = snps
+rm(snps)
+
+# mm10
+load(url('http://csbio.unc.edu/CCstatus/Media/snps.gigamuga.Rdata'))
+giga_muga = snps
 rm(snps)
 
 temp_marker = read.csv(file.path(dir_data, 'genotype_prob/B37/CC001_Uncb37V01.csv'), header = TRUE)
