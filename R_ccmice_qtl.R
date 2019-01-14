@@ -1,4 +1,7 @@
 
+# install DOQTL if not yet installed
+source("http://bioconductor.org/biocLite.R")
+biocLite(c("annotate", "annotationTools", "biomaRt", "Biobase", "corpcor", "GenomicRanges", "hwriter", "MASS", "mclust", "org.Hs.eg.db", "org.Mm.eg.db", "QTLRel", "Rsamtools", "XML"))
 
 dir_ccmice = '~/projects/ccmice';
 dir_data = file.path(dir_ccmice, 'data_tower');
