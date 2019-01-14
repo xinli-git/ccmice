@@ -37,7 +37,7 @@ rm(temp)
 for(i in dimnames(ccmice_phenotype)[[1]]){
 	tmp = t(ccmice_Prob[i,,])
 	tmp = cbind("snp_id"=rownames(tmp), ccmice_snps, tmp)
-	write.table(tmp, file = file.path('~/mac_hdd/ccmice/', "tempCache/haplotype",  paste(i,"_ccmice_haplotype.tsv",sep="")), append = FALSE, quote = FALSE, sep = "\t",
+	write.table(tmp, file = file.path(dir_data, "tempCache/haplotype",  paste(i,"_ccmice_haplotype.tsv",sep="")), append = FALSE, quote = FALSE, sep = "\t",
             eol = "\n", na = "NA", dec = ".", row.names = FALSE,
             col.names = TRUE, qmethod = c("escape", "double"),
             fileEncoding = "")
