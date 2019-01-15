@@ -3,6 +3,9 @@
 # source("http://bioconductor.org/biocLite.R")
 # biocLite(c("annotate", "annotationTools", "biomaRt", "Biobase", "corpcor", "GenomicRanges", "hwriter", "MASS", "mclust", "org.Hs.eg.db", "org.Mm.eg.db", "QTLRel", "Rsamtools", "XML"))
 
+# export PATH="/usr/local/opt/libxml2/bin:$PATH"
+# install.packages("XML")
+
 BiocManager::install("DOQTL", version = "3.8")
 
 dir_ccmice = '~/projects/ccmice';
