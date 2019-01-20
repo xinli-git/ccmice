@@ -129,7 +129,7 @@ source("~/Dropbox/projects/ccmice/html.report_Xin.R")
 html.report_Xin('~/mac_hdd/ccmice/QTL/', qtl_corrected[c(1,2)], perms = perm_max[c(1,2),], assoc = FALSE)
 html.report_Xin('~/mac_hdd/ccmice/QTL/', qtl_corrected[c(3,4)], perms = perm_max[c(3,4),], assoc = FALSE)
 
-save.image(file="~/mac_hdd/ccmice/tempCache/ccmice_apr16.RData")
+save.image(file=file.path(dir_data, "tempCache", "ccmice_10202019.RData"))
 savehistory("~/mac_hdd/ccmice/tempCache/ccmice_apr16.Rhistory")
 
 
