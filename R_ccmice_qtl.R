@@ -39,9 +39,9 @@ dimnames(model.probs)[[3]] = temp_marker$marker
 dimnames(model.probs)[[1]] = sapply(strsplit(dimnames(model.probs)[[1]], '_'), '[',  1)
 
 
-ccmice_phenotype = read.table(file.path(dir_ccmice, 'data_matlab_tower', 'ccmice_phenotype.txt'), header = TRUE)
-ccmice_phenotype$sex = 'F'
-rownames(ccmice_phenotype) = ccmice_phenotype$CCStrains
+phenotype = read.table(file.path(dir_ccmice, 'data_matlab_tower', 'ccmice_phenotype.txt'), header = TRUE)
+phenotype$sex = 'F'
+rownames(phenotype) = phenotype$CCStrains
 # ccmice_phenotype = as.vector(ccmice_phenotype)
 
 
@@ -51,6 +51,7 @@ temp_samples = intersect(dimnames(ccmice_phenotype)[[1]], dimnames(model.probs)[
 ccmice_Prob = model.probs[temp_samples,,temp_sites]
 ccmice_snps = mega_muga[dimnames(ccmice_Prob)[[3]], c('marker', 'chr', 'pos', 'cM', 'A1', 'A2', 'seq.A', 'seq.B')]
 ccmice_snps$chr = temp_marker[dimnames(ccmice_snps)[[1]], 'chromosome']
+ccmice_phenotype=phenotype[temp_samples,]
 rm(temp)
 
 # export condensed haplotype states
@@ -68,10 +69,10 @@ ccmice_K = kinship.probs(ccmice_Prob)
 ccmice_covar = data.frame(sex = as.numeric(ccmice_phenotype$sex == 'M'))
 rownames(ccmice_covar) = rownames(ccmice_phenotype)
 
-ccmice_phenotype$EarSwell = scale(ccmice_phenotype$MaximumValue, center = TRUE, scale = TRUE)
+ccmice_phenotype$EarSwell = scale(ccmice_phenotype$MaximumPCAValue, center = TRUE, scale = TRUE)
 ccmice_phenotype$ExpulsionTime = scale(ccmice_phenotype$DateofExpulsion, center = TRUE, scale = TRUE)
 ccmice_phenotype$eggcounts_Area= scale(ccmice_phenotype$Areaofeggcounts, center = TRUE, scale = TRUE)
-ccmice_phenotype$EarSwell_Area = scale(ccmice_phenotype$AreaofEarSwelling, center = TRUE, scale = TRUE)
+ccmice_phenotype$EarSwell_Area = scale(ccmice_phenotype$AUCforPCA, center = TRUE, scale = TRUE)
 qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'EarSwell_Area', 'eggcounts_Area'), probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
 
 # permutation using this one
