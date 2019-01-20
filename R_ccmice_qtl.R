@@ -20,6 +20,7 @@ generate_condensed(output.file = file.path(dir_data, "tempCache/founder.probs.B3
 
 load(file.path(dir_data, "tempCache/founder.probs.Rdata"))
 
+# both files contain all markers for B37 and B36 founder probs file
 # mm9
 load(url('http://csbio.unc.edu/CCstatus/Media/snps.megamuga.Rdata'))
 mega_muga = snps
