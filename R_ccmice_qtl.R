@@ -31,6 +31,7 @@ giga_muga = snps
 rm(snps)
 
 temp_marker = read.csv(file.path(dir_data, 'genotype_prob/B37/CC001_Uncb37V01.csv'), header = TRUE)
+temp_marker = read.csv(file.path(dir_data, 'genotype_prob/B38/CC001_Uncb38V01.csv'), header = TRUE)
 rownames(temp_marker) = temp_marker$marker
 
 dimnames(model.probs)[[3]] = temp_marker$marker
