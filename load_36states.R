@@ -35,10 +35,12 @@ create.Rdata.files_36states = function(prob.files, cross = "DO", temp_dir) {
 
 }
 
+# genotypeB37 "temp" directory cannot be shared between runs, must be unique, all files will be load
+
 generate_condensed = function(
 	output.file = "~/mac_hdd/ccmice/tempCache/founder.probs.Rdata", 
 	input_dir = '~/mac_hdd/ccmice/genotype_prob/B37',
-	temp_dir = "~/mac_hdd/ccmice/tempCache/genotype"){
+	temp_dir = "~/mac_hdd/ccmice/tempCache/genotypeB37"){
 
 	files = dir(input_dir, pattern = ".csv$", full.names = TRUE)
 	create.Rdata.files_36states(files, cross = "CC", temp_dir)
