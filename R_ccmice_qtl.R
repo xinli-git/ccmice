@@ -126,9 +126,9 @@ for(i in 1:length(qtl)) {
 		}
 	}
 
-source("~/Dropbox/projects/ccmice/html.report_Xin.R")
-html.report_Xin('~/mac_hdd/ccmice/QTL/', qtl_corrected[c(1,2)], perms = perm_max[c(1,2),], assoc = FALSE)
-html.report_Xin('~/mac_hdd/ccmice/QTL/', qtl_corrected[c(3,4)], perms = perm_max[c(3,4),], assoc = FALSE)
+source(file.path(dir_ccmice, "html.report_Xin.R"))
+html.report_Xin(file.path(dir_ccmice, 'doc', 'QTL'), qtl_corrected[c(1,2)], perms = perm_max[c(1,2),], assoc = FALSE)
+html.report_Xin(file.path(dir_ccmice, 'doc', 'QTL'), qtl_corrected[c(3,4)], perms = perm_max[c(3,4),], assoc = FALSE)
 
 save.image(file=file.path(dir_data, "tempCache", "ccmice_10202019.RData"))
 savehistory("~/mac_hdd/ccmice/tempCache/ccmice_apr16.Rhistory")
