@@ -71,7 +71,7 @@ rownames(ccmice_covar) = rownames(ccmice_phenotype)
 
 ccmice_phenotype$EarSwell = scale(ccmice_phenotype$MaximumPCAValue, center = TRUE, scale = TRUE)
 ccmice_phenotype$ExpulsionTime = scale(ccmice_phenotype$DateofExpulsion, center = TRUE, scale = TRUE)
-ccmice_phenotype$eggcounts_Area= scale(ccmice_phenotype$Areaofeggcounts, center = TRUE, scale = TRUE)
+ccmice_phenotype$eggcounts_Area= scale(ccmice_phenotype$AUCforeggcounts, center = TRUE, scale = TRUE)
 ccmice_phenotype$EarSwell_Area = scale(ccmice_phenotype$AUCforPCA, center = TRUE, scale = TRUE)
 qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'EarSwell_Area', 'eggcounts_Area'), probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
 
