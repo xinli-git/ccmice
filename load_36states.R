@@ -28,7 +28,7 @@ create.Rdata.files_36states = function(prob.files, cross = "DO", temp_dir) {
     prsmth = (as.matrix(prsmth))
     class(prsmth) = c("genoprobs", class(prsmth))
     attr(prsmth, "cross") = cross
-    save(prsmth, file = paste(temp_dir, samples[i], '.genotype.probs.Rdata', sep = "") )
+    save(prsmth, file = file.path(temp_dir, paste(samples[i], '.genotype.probs.Rdata', sep = "")) )
     print(file)
 
   } # for(i)
