@@ -78,6 +78,7 @@ qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime
 # permutation using this one
 
 perm = numeric(0)
+# scanone.eqtl uses matrixQTL implementation faster than scanone()
 eqtl = scanone.eqtl(ccmice_phenotype[, c('EarSwell', 'EarSwell_Area')], probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps, sex = ccmice_phenotype$sex)
 perm = cbind(perm, eqtl)
 bit = rownames(ccmice_phenotype)[apply(!is.na(ccmice_phenotype[, c('ExpulsionTime', 'eggcounts_Area')]), 1, all)]
