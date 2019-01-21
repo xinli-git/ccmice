@@ -149,7 +149,7 @@ create.html.page = function(path, qtl, pheno.name, perms, assoc) {
       } # for(c)
     } #     if(length(sig.A.chr) > 0 | length(sig.X.chr) > 0)
   } else {
-    plot.doqtl(qtl$lod, main = pheno.name)
+    DOQTL:::plot.doqtl(qtl$lod, main = pheno.name)
   } # else
   closePage(p)
   return(sig.qtl)
