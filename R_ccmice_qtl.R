@@ -127,6 +127,7 @@ for(i in 1:length(qtl)) {
 		}
 	}
 
+# DOQTL:::plot.doqtl()
 source(file.path(dir_ccmice, "html.report_Xin.R"))
 html.report_Xin(file.path(dir_ccmice, 'docs', 'QTL'), qtl_corrected[c(1,2)], perms = perm_max[c(1,2),], assoc = FALSE)
 html.report_Xin(file.path(dir_ccmice, 'docs', 'QTL'), qtl_corrected[c(3,4)], perms = perm_max[c(3,4),], assoc = FALSE)
