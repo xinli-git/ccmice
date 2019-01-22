@@ -48,8 +48,9 @@ rownames(phenotype) = phenotype$CCStrains
 
 
 temp_samples = intersect(dimnames(ccmice_phenotype)[[1]], dimnames(model.probs)[[1]])
-# B37 missing CC078-CC081
-# B38 missing CC078-CC081 on chrX
+temp_samples = setdiff(temp_samples, c('CC078', 'CC079', 'CC080', 'CC081', 'CC082', 'CC083'));
+# B37 missing CC078-CC083
+# B38 missing CC078-CC083 on chrX
 temp = apply(model.probs,c(1,3),sum)
 temp_sites = apply(temp > 0.99, 2, all)
 
