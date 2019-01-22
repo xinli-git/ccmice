@@ -52,7 +52,7 @@ temp_samples = setdiff(temp_samples, c('CC078', 'CC079', 'CC080', 'CC081', 'CC08
 # B37 missing CC078-CC083
 # B38 missing CC078-CC083 on chrX
 temp = apply(model.probs,c(1,3),sum)
-temp_sites = apply(temp > 0.99, 2, all)
+temp_sites = apply(temp[temp_samples,] > 0.99, 2, all)
 
 ccmice_Prob = model.probs[temp_samples,,temp_sites]
 ccmice_snps = mega_muga[dimnames(ccmice_Prob)[[3]], c('marker', 'chr', 'pos', 'cM', 'A1', 'A2', 'seq.A', 'seq.B')]
