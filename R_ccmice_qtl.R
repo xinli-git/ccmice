@@ -18,7 +18,7 @@ generate_condensed(output.file = file.path(dir_data, "tempCache/founder.probs.B3
 generate_condensed(output.file = file.path(dir_data, "tempCache/founder.probs.B38.Rdata"), input_dir = file.path(dir_data, 'genotype_prob/B38'), temp_dir = file.path(dir_data, 'tempCache/genotypeB38'))
 
 
-load(file.path(dir_data, "tempCache/founder.probs.Rdata"))
+load(file.path(dir_data, "tempCache/founder.probs.B38.Rdata"))
 
 
 # mm9
