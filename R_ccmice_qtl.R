@@ -128,8 +128,8 @@ for (i in 1:4){
 qtl_corrected = qtl
 for(i in 1:length(qtl)) {
 	for(j in 1:length(qtl[[i]]$coef)){
-		qtl_corrected[[i]]$coef[[j]][(qtl[[i]]$coef[[j]]) > 5]= NaN
-		qtl_corrected[[i]]$coef[[j]][(qtl[[i]]$coef[[j]]) < -5]= NaN
+		qtl_corrected[[i]]$coef[[j]][(qtl[[i]]$coef[[j]]) > 8]= NaN
+		qtl_corrected[[i]]$coef[[j]][(qtl[[i]]$coef[[j]]) < -8]= NaN
 		}
 	}
 
