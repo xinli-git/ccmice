@@ -30,7 +30,7 @@ rm(snps)
 # mm10
 # only contain 63957 sites of the B38 prob
 load(url('http://csbio.unc.edu/CCstatus/Media/snps.gigamuga.Rdata'))
-giga_muga = snps
+giga_mugBa = snps
 rm(snps)
 
 temp_marker = read.csv(file.path(dir_data, 'genotype_prob/B37/CC001_Uncb37V01.csv'), header = TRUE)
@@ -47,9 +47,12 @@ rownames(phenotype) = phenotype$CCStrains
 # ccmice_phenotype = as.vector(ccmice_phenotype)
 
 
+temp_samples = intersect(dimnames(ccmice_phenotype)[[1]], dimnames(model.probs)[[1]])
+# B37 missing CC078-CC081
+# B38 missing CC078-CC081 on chrX
 temp = apply(model.probs,c(1,3),sum)
 temp_sites = apply(temp > 0.99, 2, all)
-temp_samples = intersect(dimnames(ccmice_phenotype)[[1]], dimnames(model.probs)[[1]])
+
 ccmice_Prob = model.probs[temp_samples,,temp_sites]
 ccmice_snps = mega_muga[dimnames(ccmice_Prob)[[3]], c('marker', 'chr', 'pos', 'cM', 'A1', 'A2', 'seq.A', 'seq.B')]
 ccmice_snps$chr = temp_marker[dimnames(ccmice_snps)[[1]], 'chromosome']
