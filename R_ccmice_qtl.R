@@ -18,17 +18,19 @@ generate_condensed(output.file = file.path(dir_data, "tempCache/founder.probs.B3
 generate_condensed(output.file = file.path(dir_data, "tempCache/founder.probs.B38.Rdata"), input_dir = file.path(dir_data, 'genotype_prob/B38'), temp_dir = file.path(dir_data, 'tempCache/genotypeB38'))
 
 
-load(file.path(dir_data, "tempCache/founder.probs.Rdata"))
+load(file.path(dir_data, "tempCache/founder.probs.B38.Rdata"))
 
-# both files contain all markers for B37 and B36 founder probs file
+
 # mm9
+# contain all sites of the B38 prob file
 load(url('http://csbio.unc.edu/CCstatus/Media/snps.megamuga.Rdata'))
 mega_muga = snps
 rm(snps)
 
 # mm10
+# only contain 63957 sites of the B38 prob
 load(url('http://csbio.unc.edu/CCstatus/Media/snps.gigamuga.Rdata'))
-giga_muga = snps
+giga_mugBa = snps
 rm(snps)
 
 temp_marker = read.csv(file.path(dir_data, 'genotype_prob/B37/CC001_Uncb37V01.csv'), header = TRUE)
@@ -45,9 +47,13 @@ rownames(phenotype) = phenotype$CCStrains
 # ccmice_phenotype = as.vector(ccmice_phenotype)
 
 
-temp = apply(model.probs,c(1,3),sum)
-temp_sites = apply(temp > 0.99, 2, all)
 temp_samples = intersect(dimnames(ccmice_phenotype)[[1]], dimnames(model.probs)[[1]])
+temp_samples = setdiff(temp_samples, c('CC078', 'CC079', 'CC080', 'CC081', 'CC082', 'CC083'));
+# B37 missing CC078-CC083
+# B38 missing CC078-CC083 on chrX
+temp = apply(model.probs,c(1,3),sum)
+temp_sites = apply(temp[temp_samples,] > 0.99, 2, all)
+
 ccmice_Prob = model.probs[temp_samples,,temp_sites]
 ccmice_snps = mega_muga[dimnames(ccmice_Prob)[[3]], c('marker', 'chr', 'pos', 'cM', 'A1', 'A2', 'seq.A', 'seq.B')]
 ccmice_snps$chr = temp_marker[dimnames(ccmice_snps)[[1]], 'chromosome']
