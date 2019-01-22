@@ -57,6 +57,10 @@ temp_sites = apply(temp[temp_samples,] > 0.99, 2, all)
 ccmice_Prob = model.probs[temp_samples,,temp_sites]
 ccmice_snps = mega_muga[dimnames(ccmice_Prob)[[3]], c('marker', 'chr', 'pos', 'cM', 'A1', 'A2', 'seq.A', 'seq.B')]
 ccmice_snps$chr = temp_marker[dimnames(ccmice_snps)[[1]], 'chromosome']
+temp_sites = (! is.na(ccmice_snps$pos) ) & ( !is.nan(ccmice_snps$pos) ) & (ccmice_snps$pos != 0)
+ccmice_snps = ccmice_snps[temp_sites,]
+ccmice_Prob = ccmice_Prob[,,temp_sites]
+
 ccmice_phenotype=phenotype[temp_samples,]
 rm(temp)
 
