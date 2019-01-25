@@ -143,7 +143,7 @@ html.report_Xin(file.path(dir_ccmice, 'docs', 'QTL'), qtl_corrected[c(1,2)], per
 html.report_Xin(file.path(dir_ccmice, 'docs', 'QTL'), qtl_corrected[c(3,4)], perms = perm_max[c(3,4),], assoc = FALSE)
 
 EarSwell_qtl = rbind(qtl$EarSwell$lod$A, qtl$EarSwell$lod$X);
-write.table(EarSwell_qtl, file = file.path(dir_data, "docs", "QTL", "Earswell_pvalue.txt"), append = FALSE, quote = FALSE, sep = "\t",
+write.table(EarSwell_qtl, file = file.path(dir_ccmice, "docs", "QTL", "Earswell_pvalue.txt"), append = FALSE, quote = FALSE, sep = "\t",
             eol = "\n", na = "NA", dec = ".", row.names = TRUE,
             col.names = TRUE, qmethod = c("escape", "double"),
             fileEncoding = "")
