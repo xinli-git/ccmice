@@ -73,10 +73,21 @@ rownames(phenotype) = phenotype$CCStrains
 # ccmice_phenotype = as.vector(ccmice_phenotype)
 ```
 
+* measures with replicates
+```{r}
+phenotype = read.table(file.path(dir_ccmice, 'data_tower', 'phenotype', '20190124', 'ccmice_phenotype_pca.txt'), header = TRUE)
+colnames(phenotype)[colnames(phenotype) == 'Strain'] = 'CCStrain';
+# must convert from categorical(integer) to string
+# otherwise, indexing using this is not correct for other dataframe
+phenotype$CCStrain = as.character(phenotype$CCStrain)
+phenotype$sex = 'F'
+rownames(phenotype) = paste(phenotype$CCStrain, phenotype$replicate, sep="_")
+```
+
 * reduce to samples with both genotype and phenotype
 * reduce to sites with resolved genotypes
 ```{r}
-temp_samples = intersect(dimnames(ccmice_phenotype)[[1]], dimnames(model.probs)[[1]])
+temp_samples = intersect(phenotype$CCStrain, dimnames(model.probs)[[1]])
 temp_samples = setdiff(temp_samples, c('CC078', 'CC079', 'CC080', 'CC081', 'CC082', 'CC083'));
 # B37 missing CC078-CC083
 # B38 missing CC078-CC083 on chrX
@@ -87,14 +98,16 @@ temp_sites = apply(temp[temp_samples,] > 0.99, 2, all)
 * prepare genotype matrix
 * expand to match phenotpe table
 ```{r}
-ccmice_Prob = model.probs[temp_samples,,temp_sites]
+ccmice_phenotype=phenotype[phenotype$CCStrain %in% temp_samples,]
+
+ccmice_Prob = model.probs[ccmice_phenotype$CCStrain,,temp_sites]
+dimnames(ccmice_Prob)[1] = dimnames(ccmice_phenotype)[1]
 ccmice_snps = mega_muga[dimnames(ccmice_Prob)[[3]], c('marker', 'chr', 'pos', 'cM', 'A1', 'A2', 'seq.A', 'seq.B')]
 ccmice_snps$chr = temp_marker[dimnames(ccmice_snps)[[1]], 'chromosome']
 temp_sites = (! is.na(ccmice_snps$pos) ) & ( !is.nan(ccmice_snps$pos) ) & (ccmice_snps$pos != 0)
 ccmice_snps = ccmice_snps[temp_sites,]
 ccmice_Prob = ccmice_Prob[,,temp_sites]
 
-ccmice_phenotype=phenotype[temp_samples,]
 rm(temp)
 ```
 
