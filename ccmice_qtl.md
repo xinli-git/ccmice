@@ -34,6 +34,7 @@ generate_condensed(output.file = file.path(dir_data, "tempCache/founder.probs.B3
 
 ```{r}
 load(file.path(dir_data, "tempCache/founder.probs.B38.Rdata"))
+load(file.path(dir_data, "tempCache/founder.probs.B37.Rdata"))
 ```
 
 * supplement marker information, cM, chr, pos
