@@ -15,37 +15,53 @@
 BiocManager::install("DOQTL", version = "3.8")
 ```
 
+## load genotype
+
+* condense 36 states to 8 states
+
+```{r}
 dir_ccmice = '~/projects/ccmice';
 dir_data = file.path(dir_ccmice, 'data_tower');
+```
+
+```{r}
 # define functions
 source(file.path(dir_ccmice, "load_36states.R"))
 # call the function
 generate_condensed(output.file = file.path(dir_data, "tempCache/founder.probs.B37.Rdata"), input_dir = file.path(dir_data, 'genotype_prob/B37'), temp_dir = file.path(dir_data, 'tempCache/genotypeB37'))
 generate_condensed(output.file = file.path(dir_data, "tempCache/founder.probs.B38.Rdata"), input_dir = file.path(dir_data, 'genotype_prob/B38'), temp_dir = file.path(dir_data, 'tempCache/genotypeB38'))
+```
 
-
+```{r}
 load(file.path(dir_data, "tempCache/founder.probs.B38.Rdata"))
+```
 
+* supplement marker information, cM, chr, pos
 
+```{r}
 # mm9
 # contain all sites of the B38 prob file
 load(url('http://csbio.unc.edu/CCstatus/Media/snps.megamuga.Rdata'))
 mega_muga = snps
 rm(snps)
+```
 
+```{r}
 # mm10
 # only contain 63957 sites of the B38 prob
 load(url('http://csbio.unc.edu/CCstatus/Media/snps.gigamuga.Rdata'))
 giga_mugBa = snps
 rm(snps)
+```
 
+```{r}
 temp_marker = read.csv(file.path(dir_data, 'genotype_prob/B37/CC001_Uncb37V01.csv'), header = TRUE)
 temp_marker = read.csv(file.path(dir_data, 'genotype_prob/B38/CC001_Uncb38V01.csv'), header = TRUE)
 rownames(temp_marker) = temp_marker$marker
 
 dimnames(model.probs)[[3]] = temp_marker$marker
 dimnames(model.probs)[[1]] = sapply(strsplit(dimnames(model.probs)[[1]], '_'), '[',  1)
-
+```
 
 phenotype = read.table(file.path(dir_ccmice, 'data_matlab_tower', 'ccmice_phenotype.txt'), header = TRUE)
 phenotype$sex = 'F'
