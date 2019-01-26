@@ -1,4 +1,9 @@
 
+# ccmice mast cell qtl study
+
+
+## 1. install DOQTL
+```{r}
 # install DOQTL if not yet installed
 # source("http://bioconductor.org/biocLite.R")
 # biocLite(c("annotate", "annotationTools", "biomaRt", "Biobase", "corpcor", "GenomicRanges", "hwriter", "MASS", "mclust", "org.Hs.eg.db", "org.Mm.eg.db", "QTLRel", "Rsamtools", "XML"))
@@ -8,63 +13,107 @@
 # install.packages("XML")
 
 BiocManager::install("DOQTL", version = "3.8")
+```
 
+## 2. load genotype
+
+* condense 36 states to 8 states
+
+```{r}
 dir_ccmice = '~/projects/ccmice';
 dir_data = file.path(dir_ccmice, 'data_tower');
+```
+
+```{r}
 # define functions
 source(file.path(dir_ccmice, "load_36states.R"))
 # call the function
 generate_condensed(output.file = file.path(dir_data, "tempCache/founder.probs.B37.Rdata"), input_dir = file.path(dir_data, 'genotype_prob/B37'), temp_dir = file.path(dir_data, 'tempCache/genotypeB37'))
 generate_condensed(output.file = file.path(dir_data, "tempCache/founder.probs.B38.Rdata"), input_dir = file.path(dir_data, 'genotype_prob/B38'), temp_dir = file.path(dir_data, 'tempCache/genotypeB38'))
+```
 
-
+```{r}
 load(file.path(dir_data, "tempCache/founder.probs.B38.Rdata"))
+load(file.path(dir_data, "tempCache/founder.probs.B37.Rdata"))
+```
 
+* supplement marker information, cM, chr, pos
 
+```{r}
 # mm9
 # contain all sites of the B38 prob file
 load(url('http://csbio.unc.edu/CCstatus/Media/snps.megamuga.Rdata'))
 mega_muga = snps
 rm(snps)
+```
 
+```{r}
 # mm10
 # only contain 63957 sites of the B38 prob
 load(url('http://csbio.unc.edu/CCstatus/Media/snps.gigamuga.Rdata'))
 giga_mugBa = snps
 rm(snps)
+```
 
+```{r}
 temp_marker = read.csv(file.path(dir_data, 'genotype_prob/B37/CC001_Uncb37V01.csv'), header = TRUE)
 temp_marker = read.csv(file.path(dir_data, 'genotype_prob/B38/CC001_Uncb38V01.csv'), header = TRUE)
 rownames(temp_marker) = temp_marker$marker
 
 dimnames(model.probs)[[3]] = temp_marker$marker
 dimnames(model.probs)[[1]] = sapply(strsplit(dimnames(model.probs)[[1]], '_'), '[',  1)
+```
 
+## 3. prepare phenotype
 
+```{r}
 phenotype = read.table(file.path(dir_ccmice, 'data_matlab_tower', 'ccmice_phenotype.txt'), header = TRUE)
 phenotype$sex = 'F'
 rownames(phenotype) = phenotype$CCStrains
 # ccmice_phenotype = as.vector(ccmice_phenotype)
+```
 
+* measures with replicates
+```{r}
+phenotype = read.table(file.path(dir_ccmice, 'data_tower', 'phenotype', '20190124', 'ccmice_phenotype_pca.txt'), header = TRUE)
+colnames(phenotype)[colnames(phenotype) == 'Strain'] = 'CCStrain';
+# must convert from categorical(integer) to string
+# otherwise, indexing using this is not correct for other dataframe
+phenotype$CCStrain = as.character(phenotype$CCStrain)
+phenotype$sex = 'F'
+rownames(phenotype) = paste(phenotype$CCStrain, phenotype$replicate, sep="_")
+```
 
-temp_samples = intersect(dimnames(ccmice_phenotype)[[1]], dimnames(model.probs)[[1]])
+* reduce to samples with both genotype and phenotype
+* reduce to sites with resolved genotypes
+```{r}
+temp_samples = intersect(phenotype$CCStrain, dimnames(model.probs)[[1]])
 temp_samples = setdiff(temp_samples, c('CC078', 'CC079', 'CC080', 'CC081', 'CC082', 'CC083'));
 # B37 missing CC078-CC083
 # B38 missing CC078-CC083 on chrX
 temp = apply(model.probs,c(1,3),sum)
 temp_sites = apply(temp[temp_samples,] > 0.99, 2, all)
+```
 
-ccmice_Prob = model.probs[temp_samples,,temp_sites]
+* prepare genotype matrix
+* expand to match phenotpe table
+```{r}
+ccmice_phenotype=phenotype[phenotype$CCStrain %in% temp_samples,]
+
+ccmice_Prob = model.probs[ccmice_phenotype$CCStrain,,temp_sites]
+dimnames(ccmice_Prob)[1] = dimnames(ccmice_phenotype)[1]
 ccmice_snps = mega_muga[dimnames(ccmice_Prob)[[3]], c('marker', 'chr', 'pos', 'cM', 'A1', 'A2', 'seq.A', 'seq.B')]
 ccmice_snps$chr = temp_marker[dimnames(ccmice_snps)[[1]], 'chromosome']
 temp_sites = (! is.na(ccmice_snps$pos) ) & ( !is.nan(ccmice_snps$pos) ) & (ccmice_snps$pos != 0)
 ccmice_snps = ccmice_snps[temp_sites,]
 ccmice_Prob = ccmice_Prob[,,temp_sites]
 
-ccmice_phenotype=phenotype[temp_samples,]
 rm(temp)
+```
 
-# export condensed haplotype states
+
+## export condensed haplotype states
+```{r}
 for(i in dimnames(ccmice_Prob)[[1]]){
 	tmp = t(ccmice_Prob[i,,])
 	tmp = cbind("snp_id"=rownames(tmp), ccmice_snps, tmp)
@@ -73,6 +122,8 @@ for(i in dimnames(ccmice_Prob)[[1]]){
             col.names = TRUE, qmethod = c("escape", "double"),
             fileEncoding = "")
 	}
+```
+
 
 library('DOQTL')
 ccmice_K = kinship.probs(ccmice_Prob)
@@ -137,6 +188,8 @@ for(i in 1:length(qtl)) {
 		}
 	}
 
+## exporting results
+```{r}
 # DOQTL:::plot.doqtl()
 source(file.path(dir_ccmice, "html.report_Xin.R"))
 html.report_Xin(file.path(dir_ccmice, 'docs', 'QTL'), qtl_corrected[c(1,2)], perms = perm_max[c(1,2),], assoc = FALSE)
@@ -150,7 +203,7 @@ write.table(EarSwell_qtl, file = file.path(dir_ccmice, "docs", "QTL", "Earswell_
 
 save.image(file=file.path(dir_data, "tempCache", "ccmice_10202019.RData"))
 savehistory("~/mac_hdd/ccmice/tempCache/ccmice_apr16.Rhistory")
-
+```
 
 
 
