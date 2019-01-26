@@ -63,19 +63,29 @@ dimnames(model.probs)[[3]] = temp_marker$marker
 dimnames(model.probs)[[1]] = sapply(strsplit(dimnames(model.probs)[[1]], '_'), '[',  1)
 ```
 
+## prepare phenotype
+
+```{r}
 phenotype = read.table(file.path(dir_ccmice, 'data_matlab_tower', 'ccmice_phenotype.txt'), header = TRUE)
 phenotype$sex = 'F'
 rownames(phenotype) = phenotype$CCStrains
 # ccmice_phenotype = as.vector(ccmice_phenotype)
+```
 
-
+* reduce to samples with both genotype and phenotype
+* reduce to sites with resolved genotypes
+```{r}
 temp_samples = intersect(dimnames(ccmice_phenotype)[[1]], dimnames(model.probs)[[1]])
 temp_samples = setdiff(temp_samples, c('CC078', 'CC079', 'CC080', 'CC081', 'CC082', 'CC083'));
 # B37 missing CC078-CC083
 # B38 missing CC078-CC083 on chrX
 temp = apply(model.probs,c(1,3),sum)
 temp_sites = apply(temp[temp_samples,] > 0.99, 2, all)
+```
 
+* prepare genotype matrix
+* expand to match phenotpe table
+```{r}
 ccmice_Prob = model.probs[temp_samples,,temp_sites]
 ccmice_snps = mega_muga[dimnames(ccmice_Prob)[[3]], c('marker', 'chr', 'pos', 'cM', 'A1', 'A2', 'seq.A', 'seq.B')]
 ccmice_snps$chr = temp_marker[dimnames(ccmice_snps)[[1]], 'chromosome']
@@ -85,8 +95,11 @@ ccmice_Prob = ccmice_Prob[,,temp_sites]
 
 ccmice_phenotype=phenotype[temp_samples,]
 rm(temp)
+```
 
-# export condensed haplotype states
+
+## export condensed haplotype states
+```{r}
 for(i in dimnames(ccmice_Prob)[[1]]){
 	tmp = t(ccmice_Prob[i,,])
 	tmp = cbind("snp_id"=rownames(tmp), ccmice_snps, tmp)
@@ -95,6 +108,8 @@ for(i in dimnames(ccmice_Prob)[[1]]){
             col.names = TRUE, qmethod = c("escape", "double"),
             fileEncoding = "")
 	}
+```
+
 
 library('DOQTL')
 ccmice_K = kinship.probs(ccmice_Prob)
@@ -159,6 +174,8 @@ for(i in 1:length(qtl)) {
 		}
 	}
 
+## exporting results
+```{r}
 # DOQTL:::plot.doqtl()
 source(file.path(dir_ccmice, "html.report_Xin.R"))
 html.report_Xin(file.path(dir_ccmice, 'docs', 'QTL'), qtl_corrected[c(1,2)], perms = perm_max[c(1,2),], assoc = FALSE)
@@ -172,7 +189,7 @@ write.table(EarSwell_qtl, file = file.path(dir_ccmice, "docs", "QTL", "Earswell_
 
 save.image(file=file.path(dir_data, "tempCache", "ccmice_10202019.RData"))
 savehistory("~/mac_hdd/ccmice/tempCache/ccmice_apr16.Rhistory")
-
+```
 
 
 
