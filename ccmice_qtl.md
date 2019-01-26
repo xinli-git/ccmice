@@ -2,7 +2,7 @@
 # ccmice mast cell qtl study
 
 
-## install DOQTL
+## 1. install DOQTL
 ```{r}
 # install DOQTL if not yet installed
 # source("http://bioconductor.org/biocLite.R")
@@ -15,7 +15,7 @@
 BiocManager::install("DOQTL", version = "3.8")
 ```
 
-## load genotype
+## 2. load genotype
 
 * condense 36 states to 8 states
 
@@ -63,7 +63,7 @@ dimnames(model.probs)[[3]] = temp_marker$marker
 dimnames(model.probs)[[1]] = sapply(strsplit(dimnames(model.probs)[[1]], '_'), '[',  1)
 ```
 
-## prepare phenotype
+## 3. prepare phenotype
 
 ```{r}
 phenotype = read.table(file.path(dir_ccmice, 'data_matlab_tower', 'ccmice_phenotype.txt'), header = TRUE)
