@@ -1,6 +1,8 @@
 
 # ccmice mast cell qtl study
 
+
+## install DOQTL
 ```{r}
 # install DOQTL if not yet installed
 # source("http://bioconductor.org/biocLite.R")
