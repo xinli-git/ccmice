@@ -188,8 +188,8 @@ eqtl = scanone.eqtl(ccmice_phenotype[bit, c('ExpulsionTime', 'eggcounts_Area')],
 perm = cbind(perm, eqtl)
 
 
-
-nperm = 10
+perm = vector("list", 1000)
+nperm = 1000
 perm_geno = ccmice_Prob
 sample_id = dimnames(ccmice_Prob)[[1]]
 for(i in 1:nperm){
@@ -204,8 +204,7 @@ for(i in 1:nperm){
 	# K[,] = ccmice_K[new.order, new.order]
 	
 	eqtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'IgEfoldchange'), probs = perm_geno, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
-	
-	perm = cbind(perm, eqtl)
+	perm[i] = eqtl
 
 	# eqtl = scanone.eqtl(ccmice_phenotype[, c('EarSwell', 'EarSwell_Area')], probs = perm_geno, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps, sex = ccmice_phenotype$sex)
 	# perm = cbind(perm, eqtl)
