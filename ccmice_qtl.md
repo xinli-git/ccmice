@@ -172,7 +172,7 @@ qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime
 
 ```
 
-* permutation using this one
+## 6. permutation using shuffled genotypes
 
 ```{r}
 perm = numeric(0)
@@ -231,7 +231,9 @@ for (i in 1:4){
 # qtl.heatmap(qtl$lod)
 ```
 
-## correcting rank insufficient values for display
+## 7. exporting results
+
+* correcting rank insufficient values for display
 * all zero (or near) columns, beta is not correct, remove those
 ```{r}
 qtl_corrected = qtl
@@ -243,7 +245,6 @@ for(i in 1:length(qtl)) {
 	}
 ```
 
-## 6. exporting results
 ```{r}
 # DOQTL:::plot.doqtl()
 source(file.path(dir_ccmice, "html.report_Xin.R"))
