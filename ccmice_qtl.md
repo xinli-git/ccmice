@@ -132,8 +132,10 @@ rm(temp)
 ## export condensed haplotype states
 
 ```{r}
-ccmice_hap = apply(ccmice_Prob, c(1,3), which.max)
-ccmice_hap = dimnamse(ccmice_Prob)[2](ccmice_hap)
+ccmice_hap = apply(model.probs[temp_samples,,temp_sites], c(1,3), which.max)
+ccmice_hap = t(ccmice_hap)
+# must use double brackets
+ccmice_hap = mapvalues(ccmice_hap, c((1:8)), dimnames(model.probs)[[2]])
 ```
 
 ```{r}
@@ -174,12 +176,20 @@ qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime
 ```{r}
 perm = numeric(0)
 # scanone.eqtl uses matrixQTL implementation faster than scanone()
+
+eqtl = scanone.eqtl(ccmice_phenotype[, c('EarSwell', 'ExpulsionTime', 'IgEfoldchange')], probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps, sex = ccmice_phenotype$sex)
+perm = cbind(perm, eqtl)
+
 eqtl = scanone.eqtl(ccmice_phenotype[, c('EarSwell', 'EarSwell_Area')], probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps, sex = ccmice_phenotype$sex)
 perm = cbind(perm, eqtl)
+
 bit = rownames(ccmice_phenotype)[apply(!is.na(ccmice_phenotype[, c('ExpulsionTime', 'eggcounts_Area')]), 1, all)]
 eqtl = scanone.eqtl(ccmice_phenotype[bit, c('ExpulsionTime', 'eggcounts_Area')], probs = ccmice_Prob[bit,,], K = ccmice_K[bit,bit], addcovar = ccmice_covar[bit,, drop = FALSE], snps = ccmice_snps, sex = ccmice_phenotype[bit,, drop = FALSE]$sex)
 perm = cbind(perm, eqtl)
-nperm = 1000
+
+
+
+nperm = 10
 perm_geno = ccmice_Prob
 sample_id = dimnames(ccmice_Prob)[[1]]
 for(i in 1:nperm){
@@ -192,11 +202,17 @@ for(i in 1:nperm){
 	# addcovar[,] = ccmice_covar[new.order,,drop = FALSE]	
 	# K = ccmice_K
 	# K[,] = ccmice_K[new.order, new.order]
-	eqtl = scanone.eqtl(ccmice_phenotype[, c('EarSwell', 'EarSwell_Area')], probs = perm_geno, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps, sex = ccmice_phenotype$sex)
+
+	eqtl = scanone(ccmice_phenotype[, c('EarSwell', 'ExpulsionTime', 'IgEfoldchange')], probs = perm_geno, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
 	perm = cbind(perm, eqtl)
-	bit = rownames(ccmice_phenotype)[apply(!is.na(ccmice_phenotype[, c('ExpulsionTime', 'eggcounts_Area')]), 1, all)]
-	eqtl = scanone.eqtl(ccmice_phenotype[bit, c('ExpulsionTime', 'eggcounts_Area')], probs = perm_geno[bit,,], K = ccmice_K[bit,bit], addcovar = ccmice_covar[bit,, drop = FALSE], snps = ccmice_snps, sex = ccmice_phenotype[bit,, drop = FALSE]$sex)
-	perm = cbind(perm, eqtl)
+
+	# eqtl = scanone.eqtl(ccmice_phenotype[, c('EarSwell', 'EarSwell_Area')], probs = perm_geno, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps, sex = ccmice_phenotype$sex)
+	# perm = cbind(perm, eqtl)
+	
+	# bit = rownames(ccmice_phenotype)[apply(!is.na(ccmice_phenotype[, c('ExpulsionTime', 'eggcounts_Area')]), 1, all)]
+	# eqtl = scanone.eqtl(ccmice_phenotype[bit, c('ExpulsionTime', 'eggcounts_Area')], probs = perm_geno[bit,,], K = ccmice_K[bit,bit], addcovar = ccmice_covar[bit,, drop = FALSE], snps = ccmice_snps, sex = ccmice_phenotype[bit,, drop = FALSE]$sex)
+	# perm = cbind(perm, eqtl)
+	
 }
 
 perm_max = numeric(0)
@@ -234,7 +250,20 @@ html.report_Xin(file.path(dir_ccmice, 'docs', 'QTL'), qtl_corrected[c(1,2)], per
 html.report_Xin(file.path(dir_ccmice, 'docs', 'QTL'), qtl_corrected[c(3,4)], perms = perm_max[c(3,4),], assoc = FALSE)
 
 EarSwell_qtl = rbind(qtl$EarSwell$lod$A, qtl$EarSwell$lod$X);
-write.table(EarSwell_qtl, file = file.path(dir_ccmice, "docs", "QTL", "Earswell_pvalue.txt"), append = FALSE, quote = FALSE, sep = "\t",
+dimnames(EarSwell_qtl)[[2]][5:9] = paste(dimnames(EarSwell_qtl)[[2]][5:9], 'EarSwell', sep="_")
+
+ExpulsionTime_qtl = rbind(qtl$ExpulsionTime$lod$A, qtl$ExpulsionTime$lod$X);
+dimnames(ExpulsionTime_qtl)[[2]][5:9] = paste(dimnames(ExpulsionTime_qtl)[[2]][5:9], 'ExpulsionTime', sep="_")
+ExpulsionTime_qtl[1:4] = NULL
+
+IgEfoldchange_qtl = rbind(qtl$IgEfoldchange$lod$A, qtl$IgEfoldchange$lod$X);
+dimnames(IgEfoldchange_qtl)[[2]][5:9] = paste(dimnames(IgEfoldchange_qtl)[[2]][5:9], 'IgEfoldchange', sep="_")
+IgEfoldchange_qtl[1:4] = NULL
+
+qtl_table = cbind(EarSwell_qtl, ExpulsionTime_qtl[dimnames(EarSwell_qtl)[[1]],][dimnames(EarSwell_qtl)[[1]],], IgEfoldchange_qtl[dimnames(EarSwell_qtl)[[1]],], ccmice_hap[dimnames(EarSwell_qtl)[[1]],])
+
+
+write.table(qtl_table, file = file.path(dir_ccmice, "docs", "QTL", "ccmice_pvalue.txt"), append = FALSE, quote = FALSE, sep = "\t",
             eol = "\n", na = "NA", dec = ".", row.names = FALSE,
             col.names = TRUE, qmethod = c("escape", "double"),
             fileEncoding = "")
