@@ -15,4 +15,6 @@
 
 ### methods
 
+* https://github.com/xinli-git/ccmice/blob/master/ccmice_qtl.md
+
 
