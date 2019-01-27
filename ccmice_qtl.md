@@ -202,8 +202,9 @@ for(i in 1:nperm){
 	# addcovar[,] = ccmice_covar[new.order,,drop = FALSE]	
 	# K = ccmice_K
 	# K[,] = ccmice_K[new.order, new.order]
-
-	eqtl = scanone(ccmice_phenotype[, c('EarSwell', 'ExpulsionTime', 'IgEfoldchange')], probs = perm_geno, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
+	
+	eqtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'IgEfoldchange'), probs = perm_geno, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
+	
 	perm = cbind(perm, eqtl)
 
 	# eqtl = scanone.eqtl(ccmice_phenotype[, c('EarSwell', 'EarSwell_Area')], probs = perm_geno, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps, sex = ccmice_phenotype$sex)
