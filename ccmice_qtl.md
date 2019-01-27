@@ -159,6 +159,7 @@ rownames(ccmice_covar) = rownames(ccmice_phenotype)
 
 ccmice_phenotype$EarSwell = scale(ccmice_phenotype$MaximumPCAValue, center = TRUE, scale = TRUE)
 ccmice_phenotype$ExpulsionTime = scale(ccmice_phenotype$DateofExpulsion, center = TRUE, scale = TRUE)
+ccmice_phenotype$IgEfoldchange = log2(ccmice_phenotype$IgEfoldchange)
 ccmice_phenotype$IgEfoldchange = scale(ccmice_phenotype$IgEfoldchange, center = TRUE, scale = TRUE)
 
 ccmice_phenotype$ExpulsionTime = scale(ccmice_phenotype$DateofExpulsion, center = TRUE, scale = TRUE)
