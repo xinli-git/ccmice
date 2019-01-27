@@ -130,6 +130,12 @@ rm(temp)
 
 
 ## export condensed haplotype states
+
+```{r}
+ccmice_hap = apply(ccmice_Prob, c(1,3), which.max)
+ccmice_hap = dimnamse(ccmice_Prob)[2](ccmice_hap)
+```
+
 ```{r}
 for(i in dimnames(ccmice_Prob)[[1]]){
 	tmp = t(ccmice_Prob[i,,])
@@ -151,9 +157,16 @@ rownames(ccmice_covar) = rownames(ccmice_phenotype)
 
 ccmice_phenotype$EarSwell = scale(ccmice_phenotype$MaximumPCAValue, center = TRUE, scale = TRUE)
 ccmice_phenotype$ExpulsionTime = scale(ccmice_phenotype$DateofExpulsion, center = TRUE, scale = TRUE)
+ccmice_phenotype$IgEfoldchange = scale(ccmice_phenotype$IgEfoldchange, center = TRUE, scale = TRUE)
+
+ccmice_phenotype$ExpulsionTime = scale(ccmice_phenotype$DateofExpulsion, center = TRUE, scale = TRUE)
 ccmice_phenotype$eggcounts_Area= scale(ccmice_phenotype$AUCforeggcounts, center = TRUE, scale = TRUE)
 ccmice_phenotype$EarSwell_Area = scale(ccmice_phenotype$AUCforPCA, center = TRUE, scale = TRUE)
+
 qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'EarSwell_Area', 'eggcounts_Area'), probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
+
+qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'IgEfoldchange'), probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
+
 ```
 
 * permutation using this one
