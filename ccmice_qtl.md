@@ -75,7 +75,22 @@ rownames(phenotype) = phenotype$CCStrains
 
 * measures with replicates
 ```{r}
-phenotype = read.table(file.path(dir_ccmice, 'data_tower', 'phenotype', '20190124', 'ccmice_phenotype_pca.txt'), header = TRUE)
+phenotype_pca = read.table(file.path(dir_ccmice, 'data_tower', 'phenotype', '20190124', 'ccmice_phenotype_pca.txt'), header = TRUE)
+phenotype_pca[,4:11]=NULL
+colnames(phenotype_pca)[colnames(phenotype_pca) == 'MaxValue'] = 'MaximumPCAValue';
+phenotype_egg = read.table(file.path(dir_ccmice, 'data_tower', 'phenotype', '20190124', 'ccmice_phenotype_egg.txt'), header = TRUE)
+phenotype_egg[,4:16]=NULL
+colnames(phenotype_egg)[colnames(phenotype_egg) == 'expulsion'] = 'DateofExpulsion';
+phenotype_serum = read.table(file.path(dir_ccmice, 'data_tower', 'phenotype', '20190124', 'ccmice_phenotype_serum.txt'), header = TRUE)
+phenotype_serum[,c(3,4,6:11)]=NULL
+colnames(phenotype_serum)[colnames(phenotype_serum) == 'FoldChange'] = 'IgEfoldchange';
+
+phenotype = merge(phenotype_pca, phenotype_egg, by=c('Strain', 'replicate'), all=TRUE)
+phenotype = merge(phenotype, phenotype_serum, by=c('Strain', 'replicate'), all=TRUE)
+graphics.off()
+boxplot(DateofExpulsion~Strain, data=phenotype, main = "PCA")
+
+
 colnames(phenotype)[colnames(phenotype) == 'Strain'] = 'CCStrain';
 # must convert from categorical(integer) to string
 # otherwise, indexing using this is not correct for other dataframe
@@ -83,6 +98,8 @@ phenotype$CCStrain = as.character(phenotype$CCStrain)
 phenotype$sex = 'F'
 rownames(phenotype) = paste(phenotype$CCStrain, phenotype$replicate, sep="_")
 ```
+
+## 4. prepare genotype
 
 * reduce to samples with both genotype and phenotype
 * reduce to sites with resolved genotypes
@@ -124,7 +141,9 @@ for(i in dimnames(ccmice_Prob)[[1]]){
 	}
 ```
 
+## 5. running QTL
 
+```{r}
 library('DOQTL')
 ccmice_K = kinship.probs(ccmice_Prob)
 ccmice_covar = data.frame(sex = as.numeric(ccmice_phenotype$sex == 'M'))
@@ -135,9 +154,11 @@ ccmice_phenotype$ExpulsionTime = scale(ccmice_phenotype$DateofExpulsion, center 
 ccmice_phenotype$eggcounts_Area= scale(ccmice_phenotype$AUCforeggcounts, center = TRUE, scale = TRUE)
 ccmice_phenotype$EarSwell_Area = scale(ccmice_phenotype$AUCforPCA, center = TRUE, scale = TRUE)
 qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'EarSwell_Area', 'eggcounts_Area'), probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
+```
 
-# permutation using this one
+* permutation using this one
 
+```{r}
 perm = numeric(0)
 # scanone.eqtl uses matrixQTL implementation faster than scanone()
 eqtl = scanone.eqtl(ccmice_phenotype[, c('EarSwell', 'EarSwell_Area')], probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps, sex = ccmice_phenotype$sex)
@@ -178,8 +199,11 @@ for (i in 1:4){
 
 # plot(qtl, sig.thr = thr, main = 'scaled')
 # qtl.heatmap(qtl$lod)
+```
 
-# all zero columns, beta is not correct, remove those
+## correcting rank insufficient values for display
+* all zero (or near) columns, beta is not correct, remove those
+```{r}
 qtl_corrected = qtl
 for(i in 1:length(qtl)) {
 	for(j in 1:length(qtl[[i]]$coef)){
@@ -187,8 +211,9 @@ for(i in 1:length(qtl)) {
 		qtl_corrected[[i]]$coef[[j]][(qtl[[i]]$coef[[j]]) < -10]= NaN
 		}
 	}
+```
 
-## exporting results
+## 6. exporting results
 ```{r}
 # DOQTL:::plot.doqtl()
 source(file.path(dir_ccmice, "html.report_Xin.R"))
