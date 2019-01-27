@@ -157,6 +157,8 @@ ccmice_K = kinship.probs(ccmice_Prob)
 ccmice_covar = data.frame(sex = as.numeric(ccmice_phenotype$sex == 'M'))
 rownames(ccmice_covar) = rownames(ccmice_phenotype)
 
+# standardize
+# IgE take log2
 ccmice_phenotype$EarSwell = scale(ccmice_phenotype$MaximumPCAValue, center = TRUE, scale = TRUE)
 ccmice_phenotype$ExpulsionTime = scale(ccmice_phenotype$DateofExpulsion, center = TRUE, scale = TRUE)
 ccmice_phenotype$IgEfoldchange = log2(ccmice_phenotype$IgEfoldchange)
