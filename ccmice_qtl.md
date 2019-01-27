@@ -261,6 +261,11 @@ write.table(qtl_table, file = file.path(dir_ccmice, "docs", "QTL", "ccmice_pvalu
             col.names = TRUE, qmethod = c("escape", "double"),
             fileEncoding = "")
 
+write.table(ccmice_phenotype, file = file.path(dir_ccmice, "docs", "QTL", "ccmice_phenotype.txt"), append = FALSE, quote = FALSE, sep = "\t",
+            eol = "\n", na = "NA", dec = ".", row.names = FALSE,
+            col.names = TRUE, qmethod = c("escape", "double"),
+            fileEncoding = "")
+
 save.image(file=file.path(dir_data, "tempCache", "ccmice_10202019.RData"))
 savehistory("~/mac_hdd/ccmice/tempCache/ccmice_apr16.Rhistory")
 ```
