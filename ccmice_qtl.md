@@ -166,8 +166,8 @@ rownames(ccmice_covar) = rownames(ccmice_phenotype)
 # IgE take log2
 ccmice_phenotype$EarSwell = scale(ccmice_phenotype$MaximumPCAValue, center = TRUE, scale = TRUE)
 ccmice_phenotype$ExpulsionTime = scale(ccmice_phenotype$DateofExpulsion, center = TRUE, scale = TRUE)
-ccmice_phenotype$IgEfoldchange = log2(ccmice_phenotype$IgEfoldchange)
-ccmice_phenotype$IgEfoldchange = scale(ccmice_phenotype$IgEfoldchange, center = TRUE, scale = TRUE)
+ccmice_phenotype$log2_IgEfoldchange = log2(ccmice_phenotype$IgEfoldchange)
+ccmice_phenotype$IgEchange = scale(ccmice_phenotype$log2_IgEfoldchange, center = TRUE, scale = TRUE)
 
 ccmice_phenotype$ExpulsionTime = scale(ccmice_phenotype$DateofExpulsion, center = TRUE, scale = TRUE)
 ccmice_phenotype$eggcounts_Area= scale(ccmice_phenotype$AUCforeggcounts, center = TRUE, scale = TRUE)
@@ -175,7 +175,7 @@ ccmice_phenotype$EarSwell_Area = scale(ccmice_phenotype$AUCforPCA, center = TRUE
 
 qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'EarSwell_Area', 'eggcounts_Area'), probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
 
-qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'IgEfoldchange'), probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
+qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'IgEchange'), probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
 
 ```
 
@@ -185,7 +185,7 @@ qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime
 perm = numeric(0)
 # scanone.eqtl uses matrixQTL implementation faster than scanone()
 
-eqtl = scanone.eqtl(ccmice_phenotype[, c('EarSwell', 'ExpulsionTime', 'IgEfoldchange')], probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps, sex = ccmice_phenotype$sex)
+eqtl = scanone.eqtl(ccmice_phenotype[, c('EarSwell', 'ExpulsionTime', 'IgEchange')], probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps, sex = ccmice_phenotype$sex)
 perm = cbind(perm, eqtl)
 
 eqtl = scanone.eqtl(ccmice_phenotype[, c('EarSwell', 'EarSwell_Area')], probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps, sex = ccmice_phenotype$sex)
@@ -211,7 +211,7 @@ for(i in 1:nperm){
 	# K = ccmice_K
 	# K[,] = ccmice_K[new.order, new.order]
 	
-	eqtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'IgEfoldchange'), probs = perm_geno, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
+	eqtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'IgEchange'), probs = perm_geno, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
 	perm[[i]] = parse_qtl(eqtl)
 
 	# eqtl = scanone.eqtl(ccmice_phenotype[, c('EarSwell', 'EarSwell_Area')], probs = perm_geno, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps, sex = ccmice_phenotype$sex)
