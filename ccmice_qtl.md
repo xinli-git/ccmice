@@ -137,6 +137,8 @@ ccmice_hap = apply(model.probs[temp_samples,,temp_sites], c(1,3), which.max)
 ccmice_hap = t(ccmice_hap)
 # must use double brackets
 ccmice_hap = mapvalues(ccmice_hap, c((1:8)), dimnames(model.probs)[[2]])
+founders = c("A/J", "C57BL/6J", "129S1/SvImJ", "NOD/ShiLtJ", "NZO/HlLtJ", "CAST/EiJ", "PWK/PhJ", "WSB/EiJ")
+labels = c("A", "B", "C", "D", "E", "F", "G", "H", "I")
 ```
 
 ```{r}
