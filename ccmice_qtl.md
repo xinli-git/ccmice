@@ -96,7 +96,8 @@ colnames(phenotype)[colnames(phenotype) == 'Strain'] = 'CCStrain';
 # otherwise, indexing using this is not correct for other dataframe
 phenotype$CCStrain = as.character(phenotype$CCStrain)
 phenotype$sex = 'F'
-rownames(phenotype) = paste(phenotype$CCStrain, phenotype$replicate, sep="_")
+phenotype[, 'sample_id'] = paste(phenotype$CCStrain, phenotype$replicate, sep="_")
+dimnames(phenotype)[[1]] = phenotype[, 'sample_id']
 ```
 
 ## 4. prepare genotype
@@ -191,8 +192,8 @@ eqtl = scanone.eqtl(ccmice_phenotype[bit, c('ExpulsionTime', 'eggcounts_Area')],
 perm = cbind(perm, eqtl)
 
 
-perm = vector("list", 1000)
-nperm = 1000
+perm = vector("list", 10)
+nperm = 10
 perm_geno = ccmice_Prob
 sample_id = dimnames(ccmice_Prob)[[1]]
 for(i in 1:nperm){
@@ -207,7 +208,7 @@ for(i in 1:nperm){
 	# K[,] = ccmice_K[new.order, new.order]
 	
 	eqtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'IgEfoldchange'), probs = perm_geno, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
-	perm[i] = eqtl
+	perm[[i]] = parse_qtl(eqtl, ccmice_hap)
 
 	# eqtl = scanone.eqtl(ccmice_phenotype[, c('EarSwell', 'EarSwell_Area')], probs = perm_geno, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps, sex = ccmice_phenotype$sex)
 	# perm = cbind(perm, eqtl)
@@ -232,6 +233,14 @@ for (i in 1:4){
 # plot(qtl, sig.thr = thr, main = 'scaled')
 # qtl.heatmap(qtl$lod)
 ```
+
+```{r}
+perm_pvalue = numeric(0)
+for (i in 1:400){
+	perm_table = parse_qtl(perm[[i]], ccmice_hap)
+}
+```
+
 
 ## 7. exporting results
 
