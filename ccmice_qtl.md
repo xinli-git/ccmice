@@ -138,7 +138,9 @@ ccmice_hap = t(ccmice_hap)
 # must use double brackets
 ccmice_hap = mapvalues(ccmice_hap, c((1:8)), dimnames(model.probs)[[2]])
 founders = c("A/J", "C57BL/6J", "129S1/SvImJ", "NOD/ShiLtJ", "NZO/HlLtJ", "CAST/EiJ", "PWK/PhJ", "WSB/EiJ")
-labels = c("A", "B", "C", "D", "E", "F", "G", "H", "I")
+labels = c("A", "B", "C", "D", "E", "F", "G", "H")
+compound = paste(labels, founders, sep=":")
+ccmice_hap_founder = mapvalues(ccmice_hap, labels, compound)
 ```
 
 ```{r}
