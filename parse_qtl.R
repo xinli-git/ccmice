@@ -1,6 +1,6 @@
 
 
-parse_qtl = function( qtl, ccmice_hap ){
+parse_qtl = function( qtl, ccmice_hap = NULL ){
 qtl_table = NULL
 for( i in names(qtl) ) {
 	EarSwell_lod = rbind(qtl[[i]]$lod$A, qtl[[i]]$lod$X);
@@ -14,7 +14,9 @@ for( i in names(qtl) ) {
 	}
 	qtl_table = cbind(qtl_table, pvalue[dimnames(qtl_table)[[1]],], coef[dimnames(coef)[[1]],])
 }
-qtl_table = cbind(qtl_table, ccmice_hap[dimnames(qtl_table)[[1]],])
+if( !is.null(ccmice_hap) ){
+	qtl_table = cbind(qtl_table, ccmice_hap[dimnames(qtl_table)[[1]],])
+}
 return(qtl_table)
 }
 
