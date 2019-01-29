@@ -3,7 +3,7 @@
 ### QTL results
 
 #### replicates separated
-* https://xinli-git.github.io/ccmice/QTL/ccmice_pvalue.txt
+* https://xinli-git.github.io/ccmice/QTL/ccmice_pvalue_condensed.txt
 * https://xinli-git.github.io/ccmice/QTL/EarSwell/EarSwell.QTL.html
 * https://xinli-git.github.io/ccmice/QTL/ExpulsionTime/ExpulsionTime.QTL.html
 * https://xinli-git.github.io/ccmice/QTL/IgEfoldchange/IgEfoldchange.QTL.html
