@@ -66,6 +66,7 @@ dimnames(model.probs)[[1]] = sapply(strsplit(dimnames(model.probs)[[1]], '_'), '
 
 ## 3. prepare phenotype
 
+* measures averaged over replicates of same strains
 ```{r}
 phenotype = read.table(file.path(dir_ccmice, 'data_matlab_tower', 'ccmice_phenotype.txt'), header = TRUE)
 phenotype$sex = 'F'
@@ -73,7 +74,7 @@ rownames(phenotype) = phenotype$CCStrains
 # ccmice_phenotype = as.vector(ccmice_phenotype)
 ```
 
-* measures with replicates
+* measures with separate replicates
 ```{r}
 phenotype_pca = read.table(file.path(dir_ccmice, 'data_tower', 'phenotype', '20190124', 'ccmice_phenotype_pca.txt'), header = TRUE)
 phenotype_pca[,4:11]=NULL
@@ -89,8 +90,9 @@ phenotype = merge(phenotype_pca, phenotype_egg, by=c('Strain', 'replicate'), all
 phenotype = merge(phenotype, phenotype_serum, by=c('Strain', 'replicate'), all=TRUE)
 graphics.off()
 boxplot(DateofExpulsion~Strain, data=phenotype, main = "PCA")
+```
 
-
+```{r}
 colnames(phenotype)[colnames(phenotype) == 'Strain'] = 'CCStrain';
 # must convert from categorical(integer) to string
 # otherwise, indexing using this is not correct for other dataframe
@@ -280,7 +282,7 @@ write.table(ccmice_phenotype, file = file.path(dir_ccmice, "docs", "QTL", "ccmic
             col.names = TRUE, qmethod = c("escape", "double"),
             fileEncoding = "")
 
-save.image(file=file.path(dir_data, "tempCache", "ccmice_10202019.RData"))
+save.image(file=file.path(dir_data, "tempCache", "ccmice_01282019.RData"))
 savehistory("~/mac_hdd/ccmice/tempCache/ccmice_apr16.Rhistory")
 ```
 
