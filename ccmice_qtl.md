@@ -90,8 +90,9 @@ phenotype = merge(phenotype_pca, phenotype_egg, by=c('Strain', 'replicate'), all
 phenotype = merge(phenotype, phenotype_serum, by=c('Strain', 'replicate'), all=TRUE)
 graphics.off()
 boxplot(DateofExpulsion~Strain, data=phenotype, main = "PCA")
+```
 
-
+```{r}
 colnames(phenotype)[colnames(phenotype) == 'Strain'] = 'CCStrain';
 # must convert from categorical(integer) to string
 # otherwise, indexing using this is not correct for other dataframe
