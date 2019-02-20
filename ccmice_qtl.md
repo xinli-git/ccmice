@@ -66,6 +66,7 @@ dimnames(model.probs)[[1]] = sapply(strsplit(dimnames(model.probs)[[1]], '_'), '
 
 ## 3. prepare phenotype
 
+* measures averaged over replicates of same strains
 ```{r}
 phenotype = read.table(file.path(dir_ccmice, 'data_matlab_tower', 'ccmice_phenotype.txt'), header = TRUE)
 phenotype$sex = 'F'
@@ -73,7 +74,7 @@ rownames(phenotype) = phenotype$CCStrains
 # ccmice_phenotype = as.vector(ccmice_phenotype)
 ```
 
-* measures with replicates
+* measures with separate replicates
 ```{r}
 phenotype_pca = read.table(file.path(dir_ccmice, 'data_tower', 'phenotype', '20190124', 'ccmice_phenotype_pca.txt'), header = TRUE)
 phenotype_pca[,4:11]=NULL
