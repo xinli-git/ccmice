@@ -253,6 +253,9 @@ perm_table = data.frame()
 for (i in 1:1000){
 	perm_table[i,'sig_EarSwell'] = sum(perm[[i]]$p_EarSwell < 0.05)
 	perm_table[i,'sig_ExpulsionTime'] = sum(perm[[i]]$p_ExpulsionTime < 0.05)
+	perm_table[i, 'sig_IgEchange'] = sum(perm[[i]]$p_IgEchange < 0.05)
+	perm_table[i,'sig_EarSwell_IgEchange'] = sum(perm[[i]]$p_EarSwell < 0.05 & perm[[i]]$p_IgEchange < 0.05)
+	perm_table[i,'sig_ExpulsionTime_IgEchange'] = sum(perm[[i]]$p_ExpulsionTime < 0.05 & perm[[i]]$p_IgEchange < 0.05)	
 }
 ```
 
