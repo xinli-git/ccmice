@@ -291,7 +291,7 @@ write.table(ccmice_phenotype, file = file.path(dir_ccmice, "docs", "QTL", "ccmic
             col.names = TRUE, qmethod = c("escape", "double"),
             fileEncoding = "")
 
-save.image(file=file.path(dir_data, "tempCache", "ccmice_01282019.RData"))
+save.image(file=file.path(dir_data, "tempCache", "ccmice_02162019.RData"))
 savehistory("~/mac_hdd/ccmice/tempCache/ccmice_apr16.Rhistory")
 ```
 
