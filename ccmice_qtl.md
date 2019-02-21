@@ -247,11 +247,12 @@ for (i in 1:4){
 # qtl.heatmap(qtl$lod)
 ```
 
+
 ```{r}
+perm_table = numeric(0)
 for (i in 1:1000){
 	perm_table[i,'sig_EarSwell'] = sum(perm[[i]]$p_EarSwell < 0.05)
 	perm_table[i,'sig_ExpulsionTime'] = sum(perm[[i]]$p_ExpulsionTime < 0.05)
-	
 }
 ```
 
