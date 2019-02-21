@@ -175,11 +175,18 @@ ccmice_phenotype$ExpulsionTime = scale(ccmice_phenotype$DateofExpulsion, center 
 ccmice_phenotype$eggcounts_Area= scale(ccmice_phenotype$AUCforeggcounts, center = TRUE, scale = TRUE)
 ccmice_phenotype$EarSwell_Area = scale(ccmice_phenotype$AUCforPCA, center = TRUE, scale = TRUE)
 
+% averaged measure
 qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'EarSwell_Area', 'eggcounts_Area'), probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
 
+% individual measures
 qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime', 'IgEchange'), probs = ccmice_Prob, K = ccmice_K, addcovar = ccmice_covar, snps = ccmice_snps)
-
 ```
+* summarize results
+```{r}
+source(file.path(dir_ccmice, "parse_qtl.R"))
+qtl_table = parse_qtl(qtl, ccmice_hap_founder)
+```
+
 
 ## 6. permutation using shuffled genotypes
 
@@ -240,10 +247,15 @@ for (i in 1:4){
 # qtl.heatmap(qtl$lod)
 ```
 
+
 ```{r}
-perm_pvalue = numeric(0)
-for (i in 1:400){
-	perm_table = parse_qtl(perm[[i]], ccmice_hap)
+perm_table = data.frame()
+for (i in 1:1000){
+	perm_table[i,'sig_EarSwell'] = sum(perm[[i]]$p_EarSwell < 0.05)
+	perm_table[i,'sig_ExpulsionTime'] = sum(perm[[i]]$p_ExpulsionTime < 0.05)
+	perm_table[i, 'sig_IgEchange'] = sum(perm[[i]]$p_IgEchange < 0.05)
+	perm_table[i,'sig_EarSwell_IgEchange'] = sum(perm[[i]]$p_EarSwell < 0.05 & perm[[i]]$p_IgEchange < 0.05)
+	perm_table[i,'sig_ExpulsionTime_IgEchange'] = sum(perm[[i]]$p_ExpulsionTime < 0.05 & perm[[i]]$p_IgEchange < 0.05)	
 }
 ```
 
@@ -269,9 +281,6 @@ html.report_Xin(file.path(dir_ccmice, 'docs', 'QTL'), qtl_corrected, perms = 5, 
 html.report_Xin(file.path(dir_ccmice, 'docs', 'QTL'), qtl_corrected[c(1,2)], perms = perm_max[c(1,2),], assoc = FALSE)
 html.report_Xin(file.path(dir_ccmice, 'docs', 'QTL'), qtl_corrected[c(3,4)], perms = perm_max[c(3,4),], assoc = FALSE)
 
-source(file.path(dir_ccmice, "parse_qtl.R"))
-qtl_table = parse_qtl(qtl, ccmice_hap)
-
 write.table(qtl_table, file = file.path(dir_ccmice, "docs", "QTL", "ccmice_pvalue.txt"), append = FALSE, quote = FALSE, sep = "\t",
             eol = "\n", na = "NA", dec = ".", row.names = FALSE,
             col.names = TRUE, qmethod = c("escape", "double"),
@@ -281,8 +290,13 @@ write.table(ccmice_phenotype, file = file.path(dir_ccmice, "docs", "QTL", "ccmic
             eol = "\n", na = "NA", dec = ".", row.names = FALSE,
             col.names = TRUE, qmethod = c("escape", "double"),
             fileEncoding = "")
+	    
+write.table(data.frame("sample_id"=rownames(ccmice_K),ccmice_K), file = file.path(dir_ccmice, "docs", "QTL", "ccmice_kinship.txt"), append = FALSE, quote = FALSE, sep = "\t",
+            eol = "\n", na = "NA", dec = ".", row.names = FALSE,
+            col.names = TRUE, qmethod = c("escape", "double"),
+            fileEncoding = "")	    
 
-save.image(file=file.path(dir_data, "tempCache", "ccmice_01282019.RData"))
+save.image(file=file.path(dir_data, "tempCache", "ccmice_02162019.RData"))
 savehistory("~/mac_hdd/ccmice/tempCache/ccmice_apr16.Rhistory")
 ```
 
