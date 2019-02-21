@@ -248,9 +248,10 @@ for (i in 1:4){
 ```
 
 ```{r}
-perm_pvalue = numeric(0)
-for (i in 1:400){
-	perm_table = parse_qtl(perm[[i]], ccmice_hap)
+for (i in 1:1000){
+	perm_table[i,'sig_EarSwell'] = sum(perm[[i]]$p_EarSwell < 0.05)
+	perm_table[i,'sig_ExpulsionTime'] = sum(perm[[i]]$p_ExpulsionTime < 0.05)
+	
 }
 ```
 
