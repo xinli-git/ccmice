@@ -290,6 +290,11 @@ write.table(ccmice_phenotype, file = file.path(dir_ccmice, "docs", "QTL", "ccmic
             eol = "\n", na = "NA", dec = ".", row.names = FALSE,
             col.names = TRUE, qmethod = c("escape", "double"),
             fileEncoding = "")
+	    
+write.table(data.frame("sample_id"=rownames(ccmice_K),ccmice_K), file = file.path(dir_ccmice, "docs", "QTL", "ccmice_kinship.txt"), append = FALSE, quote = FALSE, sep = "\t",
+            eol = "\n", na = "NA", dec = ".", row.names = FALSE,
+            col.names = TRUE, qmethod = c("escape", "double"),
+            fileEncoding = "")	    
 
 save.image(file=file.path(dir_data, "tempCache", "ccmice_02162019.RData"))
 savehistory("~/mac_hdd/ccmice/tempCache/ccmice_apr16.Rhistory")
