@@ -184,7 +184,7 @@ qtl = scanone(pheno = ccmice_phenotype, pheno.col = c('EarSwell', 'ExpulsionTime
 * summarize results
 ```{r}
 source(file.path(dir_ccmice, "parse_qtl.R"))
-qtl_table = parse_qtl(qtl, ccmice_hap)
+qtl_table = parse_qtl(qtl, ccmice_hap_founder)
 ```
 
 
