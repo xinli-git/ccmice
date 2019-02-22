@@ -4,7 +4,7 @@
 
 ### 1.1 pvalues, replicates separated
 * https://xinli-git.github.io/ccmice/QTL/ccmice_pvalue_condensed.txt
-* https://xinli-git.github.io/ccmice/QTL/anova_plots/
+* https://github.com/xinli-git/ccmice/tree/master/docs/QTL/anova_plots
 * https://xinli-git.github.io/ccmice/QTL/anova_plots/chr1_82.3445M_84.139M_UNC1043847_JAX00006066_locus.txt
 
 ### 1.2 lod scores, qtl mapping
