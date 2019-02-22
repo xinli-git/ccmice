@@ -1,27 +1,27 @@
-## ccmice mast cell qtl study
+# ccmice mast cell qtl study
 
-### QTL results
+## 1. QTL results
 
-#### pvalues, replicates separated
+### 1.1 pvalues, replicates separated
 * https://xinli-git.github.io/ccmice/QTL/ccmice_pvalue_condensed.txt
 * https://xinli-git.github.io/ccmice/QTL/anova_plots/
 * https://xinli-git.github.io/ccmice/QTL/anova_plots/chr1_82.3445M_84.139M_UNC1043847_JAX00006066_locus.txt
 
-#### qtl mapping
+### 1.2 lod scores, qtl mapping
 * https://xinli-git.github.io/ccmice/QTL/EarSwell/EarSwell.QTL.html
 * https://xinli-git.github.io/ccmice/QTL/ExpulsionTime/ExpulsionTime.QTL.html
 * https://xinli-git.github.io/ccmice/QTL/IgEfoldchange/IgEfoldchange.QTL.html
 
-### methods
+## 2. data processing and qtl methods
 
 * https://github.com/xinli-git/ccmice/blob/master/ccmice_qtl.md
 
-### results on other features
+## 3. results on other features
 
-#### descriptive phenotypes
+### 3.1 descriptive phenotypes
 * https://xinli-git.github.io/ccmice/QTL/white_spot/white_spot.QTL.html
 * https://xinli-git.github.io/ccmice/QTL/avg_LitterSize/avg_LitterSize.QTL.html
 
-#### previous run
+### 3.2 previous run
 * https://xinli-git.github.io/ccmice/QTL/EarSwell_Area/EarSwell_Area.QTL.html
 * https://xinli-git.github.io/ccmice/QTL/eggcounts_Area/eggcounts_Area.QTL.html
