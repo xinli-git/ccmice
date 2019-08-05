@@ -16,7 +16,7 @@
 
 * https://github.com/xinli-git/ccmice/blob/master/ccmice_qtl.md
 
-## 3. results on other features
+## 3. qtl results on other features
 
 ### 3.1 descriptive phenotypes
 * https://xinli-git.github.io/ccmice/QTL/white_spot/white_spot.QTL.html
@@ -25,3 +25,9 @@
 ### 3.2 previous run
 * https://xinli-git.github.io/ccmice/QTL/EarSwell_Area/EarSwell_Area.QTL.html
 * https://xinli-git.github.io/ccmice/QTL/eggcounts_Area/eggcounts_Area.QTL.html
+
+## 4. rnaseq
+
+### 4.1 QC
+* https://xinli-git.github.io/ccmice/multiqc/multiqc_report.html
+
